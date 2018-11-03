@@ -24,14 +24,9 @@ public class CharacterController : MonoBehaviour {
         rb2d = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
-    {
-        Fire();
-    }
-
     private void Fire()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
             GameObject Laser = Instantiate(laserPrefab,
                                            transform.position,
@@ -43,49 +38,61 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-    void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetAxis("Horizontal") > 0)
-        {
-            moveHorizontal = 1f;
-            facingRight = true;
-        }
-        else if (Input.GetAxis("Horizontal") < 0)
-        {
-            moveHorizontal = -1f;
-            facingRight = false;
-        }
-        else
-        {
-            moveHorizontal = 0f;
-        }
+        Fire();
+        Move();
+    }
 
-        if (Input.GetAxis("Vertical") > 0)
-        {
-            moveVertical = 1f;
-            facingUp = true;
-        }
-        else if (Input.GetAxis("Vertical") < 0)
-        {
-            moveVertical = -1f;
-            facingUp = false;
-        }
-        else
-        {
-            moveVertical = 0f;
-        }
+    void Move()
+    {
+        float deltaX = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+        float newX = transform.position.x + deltaX;
+        float deltaY = Input.GetAxis("Vertical") * Time.deltaTime * speed;
+        float newY = transform.position.y + deltaY;
 
-        if (!Input.anyKey)
-        {
-            rb2d.velocity = new Vector2(0f, 0f);
-            moveHorizontal = 0f;
-            moveVertical = 0f;
-        }
+        transform.position = new Vector2(newX, newY);
+        //if (Input.GetAxis("Horizontal") > 0)
+        //{
+        //    moveHorizontal = 1f;
+        //    facingRight = true;
+        //}
+        //else if (Input.GetAxis("Horizontal") < 0)
+        //{
+        //    moveHorizontal = -1f;
+        //    facingRight = false;
+        //}
+        //else
+        //{
+        //    moveHorizontal = 0f;
+        //}
 
-        Vector2 movement = new Vector2(moveHorizontal, moveVertical);
+        //if (Input.GetAxis("Vertical") > 0)
+        //{
+        //    moveVertical = 1f;
+        //    facingUp = true;
+        //}
+        //else if (Input.GetAxis("Vertical") < 0)
+        //{
+        //    moveVertical = -1f;
+        //    facingUp = false;
+        //}
+        //else
+        //{
+        //    moveVertical = 0f;
+        //}
 
-        //rb2d.AddForce(movement * speed);
-        rb2d.velocity = movement * speed;
+        //if (!Input.anyKey)
+        //{
+        //    rb2d.velocity = new Vector2(0f, 0f);
+        //    moveHorizontal = 0f;
+        //    moveVertical = 0f;
+        //}
+
+        //Vector2 movement = new Vector2(moveHorizontal, moveVertical);
+
+        ////rb2d.AddForce(movement * speed);
+        //rb2d.velocity = movement * speed;
     }
 
     void FlipHor()
