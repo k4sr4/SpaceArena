@@ -18,6 +18,9 @@ public class CharacterController : MonoBehaviour {
         float moveHorizontal;
         float moveVertical;
 
+        float rotateHorizontal;
+        float mrotateVertical;
+
         //if (!Input.anyKey)
         //{
         //    rb2d.velocity = new Vector2(0f, 0f);
