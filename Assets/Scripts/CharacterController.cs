@@ -8,7 +8,6 @@ public class CharacterController : MonoBehaviour {
     public float speed;
     public float rotateSpeed;
     public GameObject laserPrefab;
-    public float projectileSpeed = 100f;
 
     private Rigidbody2D rb2d;
 
@@ -40,6 +39,9 @@ public class CharacterController : MonoBehaviour {
             GameObject Laser = Instantiate(laserPrefab,
                                            transform.position,
                                            transform.rotation) as GameObject;
+
+            float projectileSpeed = Laser.GetComponent<BulletScript>().projectileSpeed;
+
             float xMagnitude = (float)System.Math.Cos((System.Math.PI / 180) * rotationDegrees);
             float yMagnitude = (float)System.Math.Sin((System.Math.PI / 180) * rotationDegrees);
             Laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed * xMagnitude, projectileSpeed * yMagnitude);
@@ -105,7 +107,7 @@ public class CharacterController : MonoBehaviour {
         float vertical = Input.GetAxis("RotationY" + id);
         if (horizontal != 0 || vertical != 0)
         {
-            angle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg -90f;
+            angle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle);            
         }
         else if (horizontal == 0 && vertical == 0)
