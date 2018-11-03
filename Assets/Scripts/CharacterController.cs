@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour {
 
-    public float speed;             
+    public float speed;
+    public GameObject laserPrefab;
+    public float projectileSpeed = 10f;
 
     private Rigidbody2D rb2d;
 
@@ -20,6 +22,25 @@ public class CharacterController : MonoBehaviour {
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        Fire();
+    }
+
+    private void Fire()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            GameObject Laser = Instantiate(laserPrefab,
+                                           transform.position,
+                                           Quaternion.identity) as GameObject;
+            Laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
+
+
+
+        }
     }
 
     void FixedUpdate()
