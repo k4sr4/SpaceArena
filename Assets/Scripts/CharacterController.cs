@@ -8,7 +8,7 @@ public class CharacterController : MonoBehaviour {
     public float speed;
     public float rotateSpeed;
     public GameObject laserPrefab;
-    public float projectileSpeed = 10f;
+    public float projectileSpeed = 100f;
 
     private Rigidbody2D rb2d;
 
@@ -34,7 +34,7 @@ public class CharacterController : MonoBehaviour {
 
     private void Fire()
     {
-        double rotationDegrees = transform.rotation.eulerAngles.z;
+        double rotationDegrees = transform.rotation.eulerAngles.z + 90;
         if (Input.GetButton("Fire"+id) && cooldown > .5 && ammo > 0)
         {
             GameObject Laser = Instantiate(laserPrefab,
@@ -62,27 +62,29 @@ public class CharacterController : MonoBehaviour {
     {
         if (!autoMove)
         {
-            float deltaX = Input.GetAxis("Horizontal"+id) * Time.deltaTime * speed;
+            moveHorizontal = Input.GetAxis("Horizontal" + id);
+            moveVertical = Input.GetAxis("Vertical" + id);
+            float deltaX = moveHorizontal * Time.deltaTime * speed;
             float newX = transform.position.x + deltaX;
-            float deltaY = Input.GetAxis("Vertical"+id) * Time.deltaTime * speed;
+            float deltaY = moveVertical * Time.deltaTime * speed;
             float newY = transform.position.y + deltaY;
 
             transform.position = new Vector2(newX, newY);
-            if (Input.GetAxis("Horizontal") > 0)
+            if (Input.GetAxis("Horizontal" + id) > 0)
             {
                 facingRight = true;
             }
-            else if (Input.GetAxis("Horizontal") < 0)
+            else if (Input.GetAxis("Horizontal" + id) < 0)
             {
                 facingRight = false;
             }
 
 
-            if (Input.GetAxis("Vertical") > 0)
+            if (Input.GetAxis("Vertical" + id) > 0)
             {
                 facingUp = true;
             }
-            else if (Input.GetAxis("Vertical") < 0)
+            else if (Input.GetAxis("Vertical" + id) < 0)
             {
                 facingUp = false;
             }
@@ -103,9 +105,12 @@ public class CharacterController : MonoBehaviour {
         float vertical = Input.GetAxis("RotationY" + id);
         if (horizontal != 0 || vertical != 0)
         {
-            angle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
+            angle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg -90f;
+            transform.rotation = Quaternion.Euler(0, 0, angle);            
+        }
+        else if (horizontal == 0 && vertical == 0)
+        {
             transform.rotation = Quaternion.Euler(0, 0, angle);
-            Debug.Log(angle);
         }
     }
     void FlipHor()
@@ -142,19 +147,19 @@ public class CharacterController : MonoBehaviour {
                 destScript.active = false;
                 transform.position = destinationPortal.transform.position;
 
-                if (destScript.exitRight && destScript.horizontal && moveHorizontal == -1f){
+                if (destScript.exitRight && destScript.horizontal && moveHorizontal < 0f){
                     FlipHor();
                 }
-                if (!destScript.exitRight && destScript.horizontal && moveHorizontal == 1f)
+                if (!destScript.exitRight && destScript.horizontal && moveHorizontal > 0f)
                 {
                     FlipHor();
                 }
 
-                if (destScript.exitUp && destScript.vertical && moveVertical == -1f)
+                if (destScript.exitUp && destScript.vertical && moveVertical < 0f)
                 {
                     FlipVer();
                 }
-                if (!destScript.exitUp && destScript.vertical && moveVertical == 1f)
+                if (!destScript.exitUp && destScript.vertical && moveVertical > 0f)
                 {
                     FlipVer();
                 }

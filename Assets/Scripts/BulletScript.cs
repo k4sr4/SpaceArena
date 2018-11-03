@@ -22,6 +22,7 @@ public class BulletScript : MonoBehaviour {
                 transform.position = destinationPortal.transform.position;
             }
         }
+
         if (collision.tag == "Wall")
         {
             Destroy(gameObject);
