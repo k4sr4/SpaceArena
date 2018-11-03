@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour {
 
+    public int id;
     public float speed;
+    public float rotateSpeed;
     public GameObject laserPrefab;
-    public float projectileSpeed = 10f;    
+    public float projectileSpeed = 10f;
 
     private Rigidbody2D rb2d;
 
@@ -23,8 +25,7 @@ public class CharacterController : MonoBehaviour {
     private int ammo = 10;
     private float cooldown = 1f;
 
-    private float rotateHorizontal;
-    private float rotateVertical;
+    private float angle = 0f;
 
     void Start()
     {
@@ -33,12 +34,15 @@ public class CharacterController : MonoBehaviour {
 
     private void Fire()
     {
-        if (Input.GetButton("Fire1") && cooldown > .5 && ammo > 0)
+        double rotationDegrees = transform.rotation.eulerAngles.z;
+        if (Input.GetButton("Fire"+id) && cooldown > .5 && ammo > 0)
         {
             GameObject Laser = Instantiate(laserPrefab,
                                            transform.position,
                                            transform.rotation) as GameObject;
-            Laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
+            float xMagnitude = (float)System.Math.Cos((System.Math.PI / 180) * rotationDegrees);
+            float yMagnitude = (float)System.Math.Sin((System.Math.PI / 180) * rotationDegrees);
+            Laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed * xMagnitude, projectileSpeed * yMagnitude);
 
             cooldown = 0f;
             ammo--;
@@ -48,17 +52,19 @@ public class CharacterController : MonoBehaviour {
     private void Update()
     {
         cooldown += Time.deltaTime;
-        Fire();
         Move();
+        Rotate();
+        Fire();
+       
     }
 
     void Move()
     {
         if (!autoMove)
         {
-            float deltaX = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+            float deltaX = Input.GetAxis("Horizontal"+id) * Time.deltaTime * speed;
             float newX = transform.position.x + deltaX;
-            float deltaY = Input.GetAxis("Vertical") * Time.deltaTime * speed;
+            float deltaY = Input.GetAxis("Vertical"+id) * Time.deltaTime * speed;
             float newY = transform.position.y + deltaY;
 
             transform.position = new Vector2(newX, newY);
@@ -90,6 +96,18 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
+
+    void Rotate()
+    {
+        float horizontal = Input.GetAxis("RotationX" + id);
+        float vertical = Input.GetAxis("RotationY" + id);
+        if (horizontal != 0 || vertical != 0)
+        {
+            angle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+            Debug.Log(angle);
+        }
+    }
     void FlipHor()
     {
         facingRight = !facingRight;
