@@ -12,6 +12,8 @@ public class CharacterController : MonoBehaviour {
     public Transform rotateAnchor;
     public int hp = 5;
 
+    public string item = "";
+
     private Rigidbody2D rb2d;
 
     private bool facingRight = true;
@@ -31,6 +33,12 @@ public class CharacterController : MonoBehaviour {
 
     private Animator anim;
 
+    /// 
+    /// Items properties
+    private bool frenzy = false;
+    private float frenzyTimer = 7f;
+
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -44,26 +52,37 @@ public class CharacterController : MonoBehaviour {
 
     private void Fire()
     {
-        double rotationDegrees = rotateAnchor.rotation.eulerAngles.z + 90;
-        if (Input.GetButton("Fire"+id) && cooldown > .5 && ammo > 0)
+        if (frenzy && frenzyTimer > 0)
         {
-            glow.SetActive(true);
-
-            GameObject Laser = Instantiate(laserPrefab,
-                                           transform.position,
-                                           rotateAnchor.rotation) as GameObject;
-
-            Laser.GetComponent<BulletScript>().player = this.gameObject;
-
-            float projectileSpeed = Laser.GetComponent<BulletScript>().projectileSpeed;
-
-            float xMagnitude = (float)System.Math.Cos((System.Math.PI / 180) * rotationDegrees);
-            float yMagnitude = (float)System.Math.Sin((System.Math.PI / 180) * rotationDegrees);
-            Laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed * xMagnitude, projectileSpeed * yMagnitude);
-
-            cooldown = 0f;
-            ammo--;            
+            gunFire();
+            frenzyTimer -= Time.deltaTime;
         }
+        else if (frenzyTimer == 0)
+        {
+            frenzy = false;
+            frenzyTimer = 7f;
+        }
+        else if (Input.GetButton("Fire" + id) && cooldown > .5 && ammo > 0)
+        {
+            gunFire();
+            cooldown = 0f;
+            ammo--;
+        }
+    }
+
+    private void gunFire()
+    {
+        double rotationDegrees = transform.rotation.eulerAngles.z + 90;
+        GameObject Laser = Instantiate(laserPrefab,
+                                           transform.position,
+                                           transform.rotation) as GameObject;
+
+        float projectileSpeed = Laser.GetComponent<BulletScript>().projectileSpeed;
+
+        float xMagnitude = (float)System.Math.Cos((System.Math.PI / 180) * rotationDegrees);
+        float yMagnitude = (float)System.Math.Sin((System.Math.PI / 180) * rotationDegrees);
+        Laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed * xMagnitude, projectileSpeed * yMagnitude);
+
     }
 
     private void Update()
@@ -246,7 +265,96 @@ public class CharacterController : MonoBehaviour {
                 sourcePortal.GetComponent<PortalScript>().bounds.SetActive(true);
             }
         }
+
+        if (collision.tag == "PickUp")
+        {
+            item = collision.GetComponent<ItemBehaviour>().itemName;
+            ammo += 30;
+
+            if (Random.Range(0, 2) == 1)
+            {
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                for (int i = 0; i < players.Length; i++)
+                {
+                    Debug.Log(players[i].name);
+                    CharacterController player = players[i].GetComponent<CharacterController>();
+
+                    if (player != this)
+                    {
+                        switch (item)
+                        {
+                            case "timeCapsule":
+                                player.TimeCapsule();
+                                break;
+                            case "cottonCandyGun":
+                                player.CottonCandyGun();
+                                break;
+                            case "rehabilitator":
+                                player.Rehabilitate();
+                                break;
+                            case "reverseControl":
+                                player.ReverseControl();
+                                break;
+                            case "frenzy":
+                                player.Frenzy();
+                                break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                switch (item)
+                {
+                    case "timeCapsule":
+                        TimeCapsule();
+                        break;
+                    case "cottonCandyGun":
+                        CottonCandyGun();
+                        break;
+                    case "rehabilitator":
+                        Rehabilitate();
+                        break;
+                    case "reverseControl":
+                        ReverseControl();
+                        break;
+                    case "frenzy":
+                        Frenzy();
+                        break;
+                }
+                Destroy(collision.gameObject);
+
+                GameObject.FindObjectOfType<GameController>().GetComponent<ItemSpawner>().itemsCount--;
+            }
+        }
     }
+
+    public void Frenzy()
+    {
+        frenzy = true;
+
+    }
+
+    public void ReverseControl()
+    {
+
+    }
+
+    public void Rehabilitate()
+    {
+
+    }
+
+    public void CottonCandyGun()
+    {
+
+    }
+
+    private void TimeCapsule()
+    {
+
+    }
+
 
     private void OnTriggerExit2D(Collider2D collision)
     {
