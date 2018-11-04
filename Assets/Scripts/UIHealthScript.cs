@@ -10,6 +10,9 @@ public class UIHealthScript : MonoBehaviour {
 	
 	void Update ()
     {
-        GetComponent<Image>().sprite = hpSprites[player.hp];
+        if (player.hp >= 0)
+        {
+            GetComponent<Image>().sprite = hpSprites[player.hp];
+        }
 	}
 }
