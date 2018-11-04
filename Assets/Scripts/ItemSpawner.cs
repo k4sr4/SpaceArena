@@ -22,7 +22,7 @@ public class ItemSpawner : MonoBehaviour {
     void Update () {
         spawnCountdown -= Time.deltaTime;
 
-        if (spawnCountdown <= 0 && itemsCount < 5)
+        if (spawnCountdown <= 0 && itemsCount < 5 && !GameObject.FindObjectOfType<GameController>().hasActiveItem)
         {
             Spawn();
             spawnCountdown = waitingForNextSpawn;

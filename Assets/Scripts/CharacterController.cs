@@ -32,7 +32,7 @@ public class CharacterController : MonoBehaviour {
     private float autoMoveX = 0f;
     private float autoMoveY = 0f;
 
-    public int ammo = 100;
+    public int ammo = 30;
     private float cooldown = 1f;
 
     private float angle = 0f;
@@ -87,7 +87,7 @@ public class CharacterController : MonoBehaviour {
         //    }
 
         //}
-        else if (Input.GetButton("Fire" + id) && cooldown > .5 && ammo > 0)
+        else if (Input.GetButton("Fire" + id) && cooldown > .25 && ammo > 0)
         {
             gunFire();
             cooldown = 0f;
@@ -142,7 +142,6 @@ public class CharacterController : MonoBehaviour {
     void transport(){
         if (!autoMove)
         {
-
 
             if (moveHorizontal == 0 && moveVertical == 0)
             {
@@ -309,7 +308,7 @@ public class CharacterController : MonoBehaviour {
         if (collision.tag == "PickUp")
         {
             item = collision.GetComponent<ItemBehaviour>().itemName;
-            ammo += 30;
+            ammo += 10;
 
             Destroy(collision.gameObject);
 

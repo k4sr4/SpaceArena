@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class GameController : MonoBehaviour {
     public List<GameObject> players;
     public bool hasActiveItem = false;
     public float itemTimer = 5f;
-
+    private List<GameObject> items = new List<GameObject>();
     // Use this for initialization
     void Start () {
 		
@@ -17,13 +18,16 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (hasActiveItem){
-            GameObject[] items = GameObject.FindGameObjectsWithTag("PickUp");
-
-            foreach (GameObject item in items)
+            if (items.Count == 0)
             {
-                item.SetActive(false);
-            }
+                GameObject[] tempItem = GameObject.FindGameObjectsWithTag("PickUp");
 
+                foreach (GameObject item in tempItem)
+                {
+                    items.Add(item);
+                    item.SetActive(false);
+                }
+            }
             itemTimer -= Time.deltaTime;
             if (itemTimer <= 0.1f)
             {
@@ -35,12 +39,12 @@ public class GameController : MonoBehaviour {
                     p.GetComponent<CharacterController>().reversed = false;
                     p.GetComponent<CharacterController>().cottonCandyGun = false;
 
-                    foreach (GameObject item in items)
-                    {
-                        item.SetActive(true);
-                    }
-
                 }
+                foreach (GameObject item in items)
+                {
+                    item.SetActive(true);
+                }
+                items.Clear();
             }
         }
 	}

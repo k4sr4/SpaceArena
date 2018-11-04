@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\PortalScript.cs" />
     <Compile Include="Assets\Scripts\Scenelaoder.cs" />
     <Compile Include="Assets\Scripts\TeleportScript.cs" />
+    <None Include="Assets\Fonts\License.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>/Users/Raven/Desktop/GameJam/SpaceArena/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
