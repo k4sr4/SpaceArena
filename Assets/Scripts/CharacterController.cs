@@ -74,9 +74,10 @@ public class CharacterController : MonoBehaviour {
 
     private void Fire()
     {
-        if (frenzy)
+        if (frenzy  && cooldown > .1)
         {
             gunFire();
+            cooldown = 0f;
         }
         //else if (cottonCandyGun){
         //    if (Input.GetButton("Fire" + id) && cooldown > .5 && ammo > 0)
@@ -85,7 +86,6 @@ public class CharacterController : MonoBehaviour {
         //        cooldown = 0f;
         //        ammo--;
         //    }
-
         //}
         else if (Input.GetButton("Fire" + id) && cooldown > .25 && ammo > 0)
         {
@@ -334,7 +334,7 @@ public class CharacterController : MonoBehaviour {
 
     public void Rehabilitate()
     {
-        hp++;
+        if(hp < 7) hp++;
         GameObject.FindObjectOfType<GameController>().hasActiveItem = false;
     }
 

@@ -33,21 +33,15 @@ public class ItemSpawner : MonoBehaviour {
 
         Vector2 pos = new Vector2(Random.Range(xMin, xMax), Random.Range(yMin, yMax));
         // Creates the random object at the random 2D position.
-
-        GameObject spawnedItem = Instantiate(itemPrefab,
-                                            pos,
-                                            transform.rotation) as GameObject;
-        itemsCount++;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Wall" || collision.tag == "Player" || collision.tag == "Portal")
+       
+        Collider2D collide = Physics2D.OverlapCircle(pos,.75f);
+        if (collide == null)
         {
-            transform.position = new Vector2(Random.Range(xMin, xMax), Random.Range(yMin, yMax));
-            Debug.Log("GEre");
+            GameObject spawnedItem = Instantiate(itemPrefab,
+                                               pos,
+                                               transform.rotation) as GameObject;
+            itemsCount++;
         }
-
+        else Spawn();
     }
-
 }
