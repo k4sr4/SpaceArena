@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour {
 
-
+    public GameObject dead;
     public float slow_speed = 2f;
     public float regular_speed = 15f;
+    public bool killed = false;
 
     public int id;
 
@@ -71,12 +72,18 @@ public class CharacterController : MonoBehaviour {
         Move();
         Rotate();
         Fire();
-        Kill();
+        if(!killed) Kill();
 
     }
 
     private void Kill(){
-        if (hp <= 0) Destroy(gameObject);
+        if (hp <= 0)
+        {
+            killed = true;
+            Instantiate(dead, transform.position, Quaternion.identity);
+            GameObject.FindObjectOfType<UIInstructionScript>().CheckIfFinished();
+            Destroy(gameObject);
+        }
     }
 
     public void DestroyAfterExplode()

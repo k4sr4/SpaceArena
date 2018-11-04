@@ -21,20 +21,11 @@ public class Scenelaoder : MonoBehaviour {
         {
             if (Input.anyKeyDown) SceneManager.LoadScene(currScene + 1);
         }
-        if (currScene == 2 && GameObject.FindGameObjectsWithTag("Player").Length == 1) 
-        {
-            SceneManager.LoadScene(1);
-        }
     }
 
     public void NextScene(){
         currScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currScene + 1);
-    }
-
-    public void PrevScene(){
-        currScene = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currScene - 1);
     }
 
     IEnumerator Wait()

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIInstructionScript : MonoBehaviour {
 
     public GameObject[] players;
     public Sprite secondInstruction;
+    public Sprite[] winSprites;
 
     bool acceptInput = false;
     bool first = true;
@@ -38,9 +40,9 @@ public class UIInstructionScript : MonoBehaviour {
                 }
                 else
                 {
-                    foreach (GameObject player in players)
+                    foreach (CharacterController player in GameObject.FindObjectsOfType<CharacterController>())
                     {
-                        player.GetComponent<Rigidbody2D>().WakeUp();
+                        player.gameObject.GetComponent<Rigidbody2D>().WakeUp();
                     }
                     acceptInput = false;
                 }
@@ -48,6 +50,29 @@ public class UIInstructionScript : MonoBehaviour {
             }
         }
 	}
+
+    public void CheckIfFinished()
+    {
+        int killed = 0;
+        int winnedID = 0;
+
+        foreach(CharacterController player in GameObject.FindObjectsOfType<CharacterController>())
+        {
+            if (player.killed)
+            {
+                killed++;
+            }
+            else
+            {
+                winnedID = player.id;
+            }
+        }
+
+        if (killed == 1 && GameObject.FindObjectsOfType<CharacterController>().Length == 2)
+        {
+            StartCoroutine(WinnerAnounce(winnedID));
+        }
+    }
 
     IEnumerator FirstInstruction()
     {
@@ -66,13 +91,21 @@ public class UIInstructionScript : MonoBehaviour {
     {
         GetComponent<Image>().sprite = secondInstruction;
         GetComponent<Image>().enabled = true;
-        foreach (GameObject player in players)
+        foreach (CharacterController player in GameObject.FindObjectsOfType<CharacterController>())
         {
-            player.GetComponent<Rigidbody2D>().Sleep();
+            player.gameObject.GetComponent<Rigidbody2D>().Sleep();
         }
         acceptInput = false;
         yield return new WaitForSeconds(2f);
         acceptInput = true;
         GameObject.FindObjectOfType<ItemSpawner>().instruction = false;
+    }
+
+    IEnumerator WinnerAnounce(int i)
+    {
+        GetComponent<Image>().sprite = winSprites[i-1];
+        GetComponent<Image>().enabled = true;
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene(1);
     }
 }
