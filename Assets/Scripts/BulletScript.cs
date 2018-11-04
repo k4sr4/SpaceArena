@@ -16,7 +16,7 @@ public class BulletScript : MonoBehaviour {
 
     private void Update()
     {
-        if (transform.position.x > 40f || transform.position.x < -40 || transform.position.y > 30 || transform.position.y < -30)
+        if (transform.position.x > 40f || transform.position.x < -40f || transform.position.y > 30f || transform.position.y < -30f)
         {
             Destroy(this.gameObject);
         }

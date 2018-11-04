@@ -12,6 +12,7 @@ public class ItemBehaviour : MonoBehaviour
     {
         if (Random.Range(0, 2) == 0) self = true;
         type = Random.Range(1,6);
+
         switch (type){
             case 1:
                 itemName = "timeCapsule";
