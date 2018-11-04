@@ -74,10 +74,10 @@ public class CharacterController : MonoBehaviour {
     {
         glow.SetActive(true);
 
-        double rotationDegrees = transform.rotation.eulerAngles.z + 90;
+        double rotationDegrees = rotateAnchor.rotation.eulerAngles.z + 90;
         GameObject Laser = Instantiate(laserPrefab,
                                            transform.position,
-                                           transform.rotation) as GameObject;
+                                           rotateAnchor.rotation) as GameObject;
 
         Laser.GetComponent<BulletScript>().player = this.gameObject;
 
@@ -184,10 +184,20 @@ public class CharacterController : MonoBehaviour {
         if (collision.tag == "Portal")
         {
             GameObject sourcePortal = collision.gameObject;
+            PortalScript sourceScript = sourcePortal.GetComponent<PortalScript>();
 
-            if (sourcePortal.GetComponent<PortalScript>().active)
-            {                
-                sourcePortal.GetComponent<PortalScript>().bounds.SetActive(false);
+            if (sourceScript.active)
+            {
+                if (transform.position.x < sourcePortal.transform.position.x)
+                {
+                    sourceScript.enter_left[id - 1].SetActive(true);
+                }
+                else
+                {
+                    sourceScript.enter_left[id - 1].SetActive(true);
+                }
+
+                sourceScript.bounds.SetActive(false);
                 List<GameObject> portals = GameObject.FindObjectOfType<GameController>().portals;
                 List<GameObject> tempPortals = new List<GameObject>(portals);
                 tempPortals.Remove(sourcePortal);
@@ -202,10 +212,12 @@ public class CharacterController : MonoBehaviour {
                     if (Random.Range(0, 2) == 0)
                     {
                         destScript.exitRight = true;
+                        destScript.exit_right[id - 1].SetActive(true);
                     }
                     else
                     {
                         destScript.exitRight = false;
+                        destScript.exit_left[id - 1].SetActive(true);
                     }
                 }
 
@@ -220,23 +232,6 @@ public class CharacterController : MonoBehaviour {
                         destScript.exitUp = false;
                     }
                 }
-
-                //if (destScript.exitRight && destScript.horizontal && moveHorizontal < 0f){
-                //    FlipHor();
-                //}
-                //if (!destScript.exitRight && destScript.horizontal && moveHorizontal > 0f)
-                //{
-                //    FlipHor();
-                //}
-
-                //if (destScript.exitUp && destScript.vertical && moveVertical < 0f)
-                //{
-                //    FlipVer();
-                //}
-                //if (!destScript.exitUp && destScript.vertical && moveVertical > 0f)
-                //{
-                //    FlipVer();
-                //}
 
                 autoMove = true;
 
@@ -266,7 +261,7 @@ public class CharacterController : MonoBehaviour {
                     }
                 }
 
-                sourcePortal.GetComponent<PortalScript>().bounds.SetActive(true);
+                sourceScript.bounds.SetActive(true);
             }
         }
 
