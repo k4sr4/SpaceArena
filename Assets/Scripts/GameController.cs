@@ -17,6 +17,13 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (hasActiveItem){
+            GameObject[] items = GameObject.FindGameObjectsWithTag("PickUp");
+
+            foreach (GameObject item in items)
+            {
+                item.SetActive(false);
+            }
+
             itemTimer -= Time.deltaTime;
             if (itemTimer <= 0.1f)
             {
@@ -27,6 +34,12 @@ public class GameController : MonoBehaviour {
                     p.GetComponent<CharacterController>().timeCapsule = false;
                     p.GetComponent<CharacterController>().reversed = false;
                     p.GetComponent<CharacterController>().cottonCandyGun = false;
+
+                    foreach (GameObject item in items)
+                    {
+                        item.SetActive(true);
+                    }
+
                 }
             }
         }
