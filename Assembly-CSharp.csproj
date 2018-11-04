@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\UIHealthScript.cs" />
     <Compile Include="Assets\Scripts\UIInstructionScript.cs" />
     <Compile Include="Assets\Scripts\UIItemScript.cs" />
+    <Compile Include="Assets\Scripts\UndyingGameControl.cs" />
     <None Include="Assets\Fonts\License.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>/Users/Raven/Desktop/GameJam/SpaceArena/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

@@ -16,7 +16,10 @@ public class CharacterController : MonoBehaviour {
     public Transform rotateAnchor;
     public int hp = 5;
 
-    public string item = "";    
+    public string item = "";
+
+
+   
 
     private Rigidbody2D rb2d;
 
@@ -39,6 +42,14 @@ public class CharacterController : MonoBehaviour {
 
     private Animator anim;
 
+    /// <summary>
+    /// Audio
+    /// </summary>
+    private AudioSource audio;
+    public AudioClip frenzySound;
+    public AudioClip gunShot;
+    private bool played;
+
     /// 
     /// Items properties
     /// 
@@ -51,6 +62,7 @@ public class CharacterController : MonoBehaviour {
     {
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -76,6 +88,12 @@ public class CharacterController : MonoBehaviour {
     {
         if (frenzy  && cooldown > .1)
         {
+            if (!played){
+                audio.PlayOneShot(frenzySound);
+                played = true;
+            }           
+
+            GetComponent<AudioSource>().Play();
             gunFire();
             cooldown = 0f;
         }
@@ -112,6 +130,8 @@ public class CharacterController : MonoBehaviour {
         float xMagnitude = (float)System.Math.Cos((System.Math.PI / 180) * rotationDegrees);
         float yMagnitude = (float)System.Math.Sin((System.Math.PI / 180) * rotationDegrees);
         Laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed * xMagnitude, projectileSpeed * yMagnitude);
+
+        audio.PlayOneShot(gunShot);
 
     }
 
@@ -323,6 +343,7 @@ public class CharacterController : MonoBehaviour {
     public void Frenzy()
     {
         frenzy = true;
+        played = false;
 
     }
 
