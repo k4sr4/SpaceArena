@@ -8,6 +8,9 @@ public class CharacterController : MonoBehaviour {
     public float speed;
     public float rotateSpeed;
     public GameObject laserPrefab;
+    public GameObject glow;
+    public Transform rotateAnchor;
+    public int hp = 5;
 
     private Rigidbody2D rb2d;
 
@@ -21,24 +24,36 @@ public class CharacterController : MonoBehaviour {
     private float autoMoveX = 0f;
     private float autoMoveY = 0f;
 
-    private int ammo = 10;
+    private int ammo = 100;
     private float cooldown = 1f;
 
     private float angle = 0f;
 
+    private Animator anim;
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+    }
+
+    public void DestroyAfterExplode()
+    {
+        Destroy(gameObject);
     }
 
     private void Fire()
     {
-        double rotationDegrees = transform.rotation.eulerAngles.z + 90;
+        double rotationDegrees = rotateAnchor.rotation.eulerAngles.z + 90;
         if (Input.GetButton("Fire"+id) && cooldown > .5 && ammo > 0)
         {
+            glow.SetActive(true);
+
             GameObject Laser = Instantiate(laserPrefab,
                                            transform.position,
-                                           transform.rotation) as GameObject;
+                                           rotateAnchor.rotation) as GameObject;
+
+            Laser.GetComponent<BulletScript>().player = this.gameObject;
 
             float projectileSpeed = Laser.GetComponent<BulletScript>().projectileSpeed;
 
@@ -47,7 +62,7 @@ public class CharacterController : MonoBehaviour {
             Laser.GetComponent<Rigidbody2D>().velocity = new Vector2(projectileSpeed * xMagnitude, projectileSpeed * yMagnitude);
 
             cooldown = 0f;
-            ammo--;
+            ammo--;            
         }
     }
 
@@ -63,9 +78,19 @@ public class CharacterController : MonoBehaviour {
     void Move()
     {
         if (!autoMove)
-        {
+        {            
             moveHorizontal = Input.GetAxis("Horizontal" + id);
             moveVertical = Input.GetAxis("Vertical" + id);
+
+            if (moveHorizontal == 0 && moveVertical == 0)
+            {
+                anim.SetBool("Move", false);
+            }
+            else
+            {
+                anim.SetBool("Move", true);
+            }
+
             float deltaX = moveHorizontal * Time.deltaTime * speed;
             float newX = transform.position.x + deltaX;
             float deltaY = moveVertical * Time.deltaTime * speed;
@@ -108,11 +133,11 @@ public class CharacterController : MonoBehaviour {
         if (horizontal != 0 || vertical != 0)
         {
             angle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);            
+            rotateAnchor.rotation = Quaternion.Euler(0, 0, angle);            
         }
         else if (horizontal == 0 && vertical == 0)
         {
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            rotateAnchor.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
     void FlipHor()
@@ -149,22 +174,46 @@ public class CharacterController : MonoBehaviour {
                 destScript.active = false;
                 transform.position = destinationPortal.transform.position;
 
-                if (destScript.exitRight && destScript.horizontal && moveHorizontal < 0f){
-                    FlipHor();
-                }
-                if (!destScript.exitRight && destScript.horizontal && moveHorizontal > 0f)
+                if (destScript.horizontal)
                 {
-                    FlipHor();
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        destScript.exitRight = true;
+                    }
+                    else
+                    {
+                        destScript.exitRight = false;
+                    }
                 }
 
-                if (destScript.exitUp && destScript.vertical && moveVertical < 0f)
+                if (destScript.vertical)
                 {
-                    FlipVer();
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        destScript.exitUp = true;
+                    }
+                    else
+                    {
+                        destScript.exitUp = false;
+                    }
                 }
-                if (!destScript.exitUp && destScript.vertical && moveVertical > 0f)
-                {
-                    FlipVer();
-                }
+
+                //if (destScript.exitRight && destScript.horizontal && moveHorizontal < 0f){
+                //    FlipHor();
+                //}
+                //if (!destScript.exitRight && destScript.horizontal && moveHorizontal > 0f)
+                //{
+                //    FlipHor();
+                //}
+
+                //if (destScript.exitUp && destScript.vertical && moveVertical < 0f)
+                //{
+                //    FlipVer();
+                //}
+                //if (!destScript.exitUp && destScript.vertical && moveVertical > 0f)
+                //{
+                //    FlipVer();
+                //}
 
                 autoMove = true;
 

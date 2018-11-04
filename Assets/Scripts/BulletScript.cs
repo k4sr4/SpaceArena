@@ -5,6 +5,15 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour {
     public float projectileSpeed = 50f;
 
+    public GameObject player;
+
+    private Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Portal")
@@ -21,6 +30,30 @@ public class BulletScript : MonoBehaviour {
                 PortalScript destScript = destinationPortal.GetComponent<PortalScript>();
                 destScript.active = false;
                 transform.position = destinationPortal.transform.position;
+
+                if (destScript.horizontal)
+                {
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        destScript.exitRight = true;
+                    }
+                    else
+                    {
+                        destScript.exitRight = false;
+                    }
+                }
+
+                if (destScript.vertical)
+                {
+                    if (Random.Range(0, 2) == 0)
+                    {
+                        destScript.exitUp = true;
+                    }
+                    else
+                    {
+                        destScript.exitUp = false;
+                    }
+                }
 
                 double rotationDegrees = 0;
 
@@ -51,12 +84,25 @@ public class BulletScript : MonoBehaviour {
 
         if (collision.tag == "Wall")
         {
-            Destroy(gameObject);
+            ExplodeAnimation();
         }
 
-        //if (collision.tag == "Player" && collision.gameObject != this.gameObject)
-        //{
-        //    Destroy(gameObject);
-        //}
+        if (collision.tag == "Player" && collision.gameObject != player)
+        {
+            Destroy(gameObject);
+            collision.GetComponent<CharacterController>().hp--;
+        }
+    }
+
+    void ExplodeAnimation()
+    {
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+        anim.SetTrigger("Explode");
+    }
+
+    public void DestroyAfterExplode()
+    {
+        Destroy(gameObject);
+        player.GetComponent<CharacterController>().glow.SetActive(false);
     }
 }
