@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\ItemBehaviour.cs" />
     <Compile Include="Assets\Scripts\ItemSpawner.cs" />
     <Compile Include="Assets\Scripts\PortalScript.cs" />
+    <Compile Include="Assets\Scripts\Scenelaoder.cs" />
     <Compile Include="Assets\Scripts\TeleportScript.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>/Users/Raven/Desktop/GameJam/SpaceArena/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
