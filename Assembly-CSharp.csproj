@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\UIAmmoScript.cs" />
     <Compile Include="Assets\Scripts\UICardScript.cs" />
     <Compile Include="Assets\Scripts\UIHealthScript.cs" />
+    <Compile Include="Assets\Scripts\UIInstructionScript.cs" />
     <Compile Include="Assets\Scripts\UIItemScript.cs" />
     <None Include="Assets\Fonts\License.txt" />
     <Reference Include="UnityEditor.StandardEvents">
