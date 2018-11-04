@@ -321,9 +321,11 @@
     <Compile Include="Assets\Scripts\ItemBehaviour.cs" />
     <Compile Include="Assets\Scripts\ItemSpawner.cs" />
     <Compile Include="Assets\Scripts\PortalScript.cs" />
+    <Compile Include="Assets\Scripts\Scenelaoder.cs" />
     <Compile Include="Assets\Scripts\TeleportScript.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Fonts\License.txt" />
     <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Styles\Main_Dark.uss" />
     <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Styles\Main_Light.uss" />
     <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\Alert.uxml" />

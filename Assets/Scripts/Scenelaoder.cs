@@ -13,15 +13,13 @@ public class Scenelaoder : MonoBehaviour {
     }
 
     void Update(){
-        Debug.Log(currScene);
         if (currScene == 0)
         {
             StartCoroutine(Wait());
-            NextScene();
         }
-        if(currScene == 1 && GameObject.FindGameObjectsWithTag("Player").Length == 1){
+        if(currScene == 1 && GameObject.FindGameObjectsWithTag("Player").Length == 1)
+        {
             SceneManager.LoadScene(currScene);
-
         }
     }
 
@@ -38,6 +36,7 @@ public class Scenelaoder : MonoBehaviour {
     IEnumerator Wait()
     {
         yield return new WaitForSeconds(5f);
+        NextScene();
     }
 
 }
