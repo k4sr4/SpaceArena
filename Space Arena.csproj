@@ -318,6 +318,8 @@
     <Compile Include="Assets\Scripts\BulletScript.cs" />
     <Compile Include="Assets\Scripts\CharacterController.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
+    <Compile Include="Assets\Scripts\ItemBehaviour.cs" />
+    <Compile Include="Assets\Scripts\ItemSpawner.cs" />
     <Compile Include="Assets\Scripts\PortalScript.cs" />
   </ItemGroup>
   <ItemGroup>

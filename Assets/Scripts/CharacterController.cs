@@ -72,10 +72,14 @@ public class CharacterController : MonoBehaviour {
 
     private void gunFire()
     {
+        glow.SetActive(true);
+
         double rotationDegrees = transform.rotation.eulerAngles.z + 90;
         GameObject Laser = Instantiate(laserPrefab,
                                            transform.position,
                                            transform.rotation) as GameObject;
+
+        Laser.GetComponent<BulletScript>().player = this.gameObject;
 
         float projectileSpeed = Laser.GetComponent<BulletScript>().projectileSpeed;
 
@@ -321,11 +325,11 @@ public class CharacterController : MonoBehaviour {
                     case "frenzy":
                         Frenzy();
                         break;
-                }
-                Destroy(collision.gameObject);
-
-                GameObject.FindObjectOfType<GameController>().GetComponent<ItemSpawner>().itemsCount--;
+                }                
             }
+            Destroy(collision.gameObject);
+
+            GameObject.FindObjectOfType<GameController>().GetComponent<ItemSpawner>().itemsCount--;
         }
     }
 
