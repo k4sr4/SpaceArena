@@ -17,9 +17,13 @@ public class Scenelaoder : MonoBehaviour {
         {
             StartCoroutine(Wait());
         }
-        if(currScene == 1 && GameObject.FindGameObjectsWithTag("Player").Length == 1)
+        if(currScene == 1 )
         {
-            SceneManager.LoadScene(currScene);
+            if (Input.anyKeyDown) SceneManager.LoadScene(currScene + 1);
+        }
+        if (currScene == 2 && GameObject.FindGameObjectsWithTag("Player").Length == 1) 
+        {
+            SceneManager.LoadScene(1);
         }
     }
 
