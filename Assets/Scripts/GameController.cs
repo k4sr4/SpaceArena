@@ -6,9 +6,11 @@ public class GameController : MonoBehaviour {
 
     public List<GameObject> portals;
     public List<GameObject> players;
+    public bool hasActiveItem = false;
+    public float itemTimer = 5f;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	

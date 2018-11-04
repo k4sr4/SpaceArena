@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour {
 
 
-    private static float TIMER = 5f;
+    private float TIMER = 5f;
     public int id;
     public float speed;
     public float rotateSpeed;
@@ -14,8 +14,7 @@ public class CharacterController : MonoBehaviour {
     public Transform rotateAnchor;
     public int hp = 5;
 
-    public string item = "";
-    public bool hasActive = false;
+    public string item = "";    
 
     private Rigidbody2D rb2d;
 
@@ -29,7 +28,7 @@ public class CharacterController : MonoBehaviour {
     private float autoMoveX = 0f;
     private float autoMoveY = 0f;
 
-    private int ammo = 100;
+    public int ammo = 100;
     private float cooldown = 1f;
 
     private float angle = 0f;
@@ -39,11 +38,10 @@ public class CharacterController : MonoBehaviour {
     /// 
     /// Items properties
     /// 
-    private float itemTimer = TIMER;
-    private bool frenzy = false;
-    private bool timeCapsule = false;
-    private bool reversed = false;
-    private bool cottonCandyGun = false;
+    public bool frenzy = false;
+    public bool timeCapsule = false;
+    public bool reversed = false;
+    public bool cottonCandyGun = false;
 
     void Start()
     {
@@ -66,17 +64,25 @@ public class CharacterController : MonoBehaviour {
 
     private void Fire()
     {
-        if (frenzy && itemTimer > 0)
+        if (frenzy && GameObject.FindObjectOfType<GameController>().itemTimer > 0)
         {
             gunFire();
-            itemTimer -= Time.deltaTime;
-            Debug.Log("Fire: "+itemTimer);
+            GameObject.FindObjectOfType<GameController>().itemTimer -= Time.deltaTime;
+            Debug.Log("Fire: "+GameObject.FindObjectOfType<GameController>().itemTimer);
         }
-        else if (itemTimer == 0)
+        else if (cottonCandyGun && GameObject.FindObjectOfType<GameController>().itemTimer > 0)
         {
+            GameObject.FindObjectOfType<GameController>().itemTimer -= Time.deltaTime;
+            Debug.Log("Fire: " + GameObject.FindObjectOfType<GameController>().itemTimer);
+            gunFire();
+            cooldown = 0f;
+            ammo--;
+        }
+        else if (GameObject.FindObjectOfType<GameController>().itemTimer <= 0)
+        {
+            GameObject.FindObjectOfType<GameController>().hasActiveItem = false;
             frenzy = false;
-            itemTimer = TIMER;
-            hasActive = false;
+            cottonCandyGun = false;
         }
         else if (Input.GetButton("Fire" + id) && cooldown > .5 && ammo > 0)
         {
@@ -95,6 +101,10 @@ public class CharacterController : MonoBehaviour {
                                            transform.position,
                                            rotateAnchor.rotation) as GameObject;
 
+        if (cottonCandyGun)
+        {
+            Laser.GetComponent<BoxCollider2D>().enabled = false;
+        }
 
         Laser.GetComponent<BulletScript>().player = this.gameObject;
 
@@ -106,41 +116,38 @@ public class CharacterController : MonoBehaviour {
 
     }
 
-
-
     void Move()
     {
         moveHorizontal = Input.GetAxis("Horizontal" + id);
         moveVertical = Input.GetAxis("Vertical" + id);
 
-        if (reversed && itemTimer > 0){
-            moveVertical = Input.GetAxis("Horizontal" + id);
-            moveHorizontal = Input.GetAxis("Vertical" + id);
-            itemTimer -= Time.deltaTime;
-            Debug.Log("reversed: " + itemTimer);
+        if (reversed && GameObject.FindObjectOfType<GameController>().itemTimer > 0){
+            float temp = moveHorizontal;
+            moveHorizontal = moveVertical;
+            moveVertical = temp;
             transport();
+            GameObject.FindObjectOfType<GameController>().itemTimer -= Time.deltaTime;
+            Debug.Log("reversed: " + GameObject.FindObjectOfType<GameController>().itemTimer);
         }
-        else if (itemTimer == 0){
-            reversed = false;
-            itemTimer = TIMER;
-            hasActive = false;
-        }
-        else if (timeCapsule && itemTimer > 0)
+        else if (timeCapsule && GameObject.FindObjectOfType<GameController>().itemTimer > 0)
         {
             speed = 2f;
-            itemTimer -= Time.deltaTime;
             transport();
-            Debug.Log("timeCapsule: " +itemTimer);
+            GameObject.FindObjectOfType<GameController>().itemTimer -= Time.deltaTime;
+            Debug.Log("timeCapsule: " +GameObject.FindObjectOfType<GameController>().itemTimer);
         }
-        else if (itemTimer == 0){
-
+        else if (GameObject.FindObjectOfType<GameController>().itemTimer <= 0){
+            transport();
+            GameObject.FindObjectOfType<GameController>().hasActiveItem = false;
+            reversed = false;
             timeCapsule = false;
-            itemTimer = TIMER;
-            hasActive = false;
-        }
-        else{
+            speed = 15f;
             transport();
-        } 
+        }
+        else
+        {
+            transport();
+        }
     }
 
 
@@ -336,7 +343,9 @@ public class CharacterController : MonoBehaviour {
 
     public void Rehabilitate()
     {
+        Debug.Log("HP");
         hp++;
+        GameObject.FindObjectOfType<GameController>().hasActiveItem = false;
     }
 
     public void CottonCandyGun()
@@ -360,5 +369,10 @@ public class CharacterController : MonoBehaviour {
             autoMoveX = 0f;
             autoMoveY = 0f;
         }
+    }
+
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(.5f);
     }
 }

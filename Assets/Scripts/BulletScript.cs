@@ -14,6 +14,14 @@ public class BulletScript : MonoBehaviour {
         anim = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        if (transform.position.x > 40f || transform.position.x < -40 || transform.position.y > 30 || transform.position.y < -30)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Portal")

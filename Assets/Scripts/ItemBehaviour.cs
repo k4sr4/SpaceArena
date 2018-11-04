@@ -23,7 +23,7 @@ public class ItemBehaviour : MonoBehaviour
                 itemName = "rehabilitator";
                 break;
             case 4:
-                itemName = "revereseControl";
+                itemName = "reverseControl";
                 break;
             case 5:
                 itemName = "frenzy";
@@ -35,10 +35,12 @@ public class ItemBehaviour : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            CharacterController currPlayer = collision.gameObject.GetComponent<CharacterController>();
-            if (!currPlayer.hasActive)
+            if (!GameObject.FindObjectOfType<GameController>().hasActiveItem)
             {
-                currPlayer.hasActive = true;
+                GameObject.FindObjectOfType<GameController>().hasActiveItem = true;
+                GameObject.FindObjectOfType<GameController>().itemTimer = 5f;
+
+                CharacterController currPlayer = collision.gameObject.GetComponent<CharacterController>();
 
                 if (!self)
                 {
@@ -47,29 +49,25 @@ public class ItemBehaviour : MonoBehaviour
                     for (int i = 0; i < players.Length; i++)
                     {
                         CharacterController player = players[i].GetComponent<CharacterController>();
-                        if (!player.hasActive)
+                        if (player != currPlayer)
                         {
-                            player.hasActive = true;
-                            if (player != currPlayer)
+                            switch (itemName)
                             {
-                                switch (itemName)
-                                {
-                                    case "timeCapsule":
-                                        player.TimeCapsule();
-                                        break;
-                                    case "cottonCandyGun":
-                                        player.CottonCandyGun();
-                                        break;
-                                    case "rehabilitator":
-                                        player.Rehabilitate();
-                                        break;
-                                    case "reverseControl":
-                                        player.ReverseControl();
-                                        break;
-                                    case "frenzy":
-                                        player.Frenzy();
-                                        break;
-                                }
+                                case "timeCapsule":
+                                    player.TimeCapsule();
+                                    break;
+                                case "cottonCandyGun":
+                                    player.CottonCandyGun();
+                                    break;
+                                case "rehabilitator":
+                                    player.Rehabilitate();
+                                    break;
+                                case "reverseControl":
+                                    player.ReverseControl();
+                                    break;
+                                case "frenzy":
+                                    player.Frenzy();
+                                    break;
                             }
                         }
                     }
