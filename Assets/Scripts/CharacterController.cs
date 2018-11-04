@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour {
 
+
+    private static float TIMER = 5f;
     public int id;
     public float speed;
     public float rotateSpeed;
@@ -13,6 +15,7 @@ public class CharacterController : MonoBehaviour {
     public int hp = 5;
 
     public string item = "";
+    public bool hasActive = false;
 
     private Rigidbody2D rb2d;
 
@@ -35,9 +38,12 @@ public class CharacterController : MonoBehaviour {
 
     /// 
     /// Items properties
+    /// 
+    private float itemTimer = TIMER;
     private bool frenzy = false;
-    private float frenzyTimer = 7f;
-
+    private bool timeCapsule = false;
+    private bool reversed = false;
+    private bool cottonCandyGun = false;
 
     void Start()
     {
@@ -45,6 +51,14 @@ public class CharacterController : MonoBehaviour {
         anim = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        cooldown += Time.deltaTime;
+        Move();
+        Rotate();
+        Fire();
+
+    }
     public void DestroyAfterExplode()
     {
         Destroy(gameObject);
@@ -52,15 +66,17 @@ public class CharacterController : MonoBehaviour {
 
     private void Fire()
     {
-        if (frenzy && frenzyTimer > 0)
+        if (frenzy && itemTimer > 0)
         {
             gunFire();
-            frenzyTimer -= Time.deltaTime;
+            itemTimer -= Time.deltaTime;
+            Debug.Log("Fire: "+itemTimer);
         }
-        else if (frenzyTimer == 0)
+        else if (itemTimer == 0)
         {
             frenzy = false;
-            frenzyTimer = 7f;
+            itemTimer = TIMER;
+            hasActive = false;
         }
         else if (Input.GetButton("Fire" + id) && cooldown > .5 && ammo > 0)
         {
@@ -74,10 +90,10 @@ public class CharacterController : MonoBehaviour {
     {
         glow.SetActive(true);
 
-        double rotationDegrees = transform.rotation.eulerAngles.z + 90;
+        double rotationDegrees = rotateAnchor.rotation.eulerAngles.z + 90;
         GameObject Laser = Instantiate(laserPrefab,
                                            transform.position,
-                                           transform.rotation) as GameObject;
+                                            rotateAnchor.rotation) as GameObject;
 
         Laser.GetComponent<BulletScript>().player = this.gameObject;
 
@@ -89,21 +105,48 @@ public class CharacterController : MonoBehaviour {
 
     }
 
-    private void Update()
-    {
-        cooldown += Time.deltaTime;
-        Move();
-        Rotate();
-        Fire();
-       
-    }
+
 
     void Move()
     {
+        moveHorizontal = Input.GetAxis("Horizontal" + id);
+        moveVertical = Input.GetAxis("Vertical" + id);
+
+        if (reversed && itemTimer > 0){
+            moveVertical = Input.GetAxis("Horizontal" + id);
+            moveHorizontal = Input.GetAxis("Vertical" + id);
+            itemTimer -= Time.deltaTime;
+            Debug.Log("reversed: " + itemTimer);
+            transport();
+        }
+        else if (itemTimer == 0){
+            reversed = false;
+            itemTimer = TIMER;
+            hasActive = false;
+        }
+        else if (timeCapsule && itemTimer > 0)
+        {
+            speed = 2f;
+            itemTimer -= Time.deltaTime;
+            transport();
+            Debug.Log("timeCapsule: " +itemTimer);
+        }
+        else if (itemTimer == 0){
+
+            timeCapsule = false;
+            itemTimer = TIMER;
+            hasActive = false;
+        }
+        else{
+            transport();
+        } 
+    }
+
+
+    void transport(){
         if (!autoMove)
-        {            
-            moveHorizontal = Input.GetAxis("Horizontal" + id);
-            moveVertical = Input.GetAxis("Vertical" + id);
+        {
+
 
             if (moveHorizontal == 0 && moveVertical == 0)
             {
@@ -148,7 +191,6 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-
     void Rotate()
     {
         float horizontal = Input.GetAxis("RotationX" + id);
@@ -163,6 +205,8 @@ public class CharacterController : MonoBehaviour {
             rotateAnchor.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
+
+
     void FlipHor()
     {
         facingRight = !facingRight;
@@ -221,23 +265,6 @@ public class CharacterController : MonoBehaviour {
                     }
                 }
 
-                //if (destScript.exitRight && destScript.horizontal && moveHorizontal < 0f){
-                //    FlipHor();
-                //}
-                //if (!destScript.exitRight && destScript.horizontal && moveHorizontal > 0f)
-                //{
-                //    FlipHor();
-                //}
-
-                //if (destScript.exitUp && destScript.vertical && moveVertical < 0f)
-                //{
-                //    FlipVer();
-                //}
-                //if (!destScript.exitUp && destScript.vertical && moveVertical > 0f)
-                //{
-                //    FlipVer();
-                //}
-
                 autoMove = true;
 
                 if (destScript.horizontal)
@@ -275,58 +302,6 @@ public class CharacterController : MonoBehaviour {
             item = collision.GetComponent<ItemBehaviour>().itemName;
             ammo += 30;
 
-            if (Random.Range(0, 2) == 1)
-            {
-                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                for (int i = 0; i < players.Length; i++)
-                {
-                    Debug.Log(players[i].name);
-                    CharacterController player = players[i].GetComponent<CharacterController>();
-
-                    if (player != this)
-                    {
-                        switch (item)
-                        {
-                            case "timeCapsule":
-                                player.TimeCapsule();
-                                break;
-                            case "cottonCandyGun":
-                                player.CottonCandyGun();
-                                break;
-                            case "rehabilitator":
-                                player.Rehabilitate();
-                                break;
-                            case "reverseControl":
-                                player.ReverseControl();
-                                break;
-                            case "frenzy":
-                                player.Frenzy();
-                                break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                switch (item)
-                {
-                    case "timeCapsule":
-                        TimeCapsule();
-                        break;
-                    case "cottonCandyGun":
-                        CottonCandyGun();
-                        break;
-                    case "rehabilitator":
-                        Rehabilitate();
-                        break;
-                    case "reverseControl":
-                        ReverseControl();
-                        break;
-                    case "frenzy":
-                        Frenzy();
-                        break;
-                }                
-            }
             Destroy(collision.gameObject);
 
             GameObject.FindObjectOfType<GameController>().GetComponent<ItemSpawner>().itemsCount--;
@@ -335,28 +310,32 @@ public class CharacterController : MonoBehaviour {
 
     public void Frenzy()
     {
+        Debug.Log("frenzy");
         frenzy = true;
 
     }
 
     public void ReverseControl()
     {
-
+        Debug.Log("Reverse");
+        reversed = true;
     }
 
     public void Rehabilitate()
     {
-
+        hp++;
     }
 
     public void CottonCandyGun()
     {
-
+        Debug.Log("Cotton");
+        cottonCandyGun = true;
     }
 
-    private void TimeCapsule()
+    public void TimeCapsule()
     {
-
+        Debug.Log("time");
+        timeCapsule = true; 
     }
 
 
