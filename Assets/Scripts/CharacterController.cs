@@ -121,9 +121,8 @@ public class CharacterController : MonoBehaviour {
         moveVertical = Input.GetAxis("Vertical" + id);
 
         if (reversed){
-            float temp = moveHorizontal;
-            moveHorizontal = moveVertical;
-            moveVertical = temp;
+            moveHorizontal = -moveHorizontal;
+            moveVertical = -moveVertical;
             transport();
         }
         else if (timeCapsule)
