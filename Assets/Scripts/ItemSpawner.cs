@@ -20,12 +20,15 @@ public class ItemSpawner : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        spawnCountdown -= Time.deltaTime;
-
-        if (spawnCountdown <= 0 && itemsCount < 5 && !GameObject.FindObjectOfType<GameController>().hasActiveItem)
+        if (!GameObject.FindObjectOfType<GameController>().hasActiveItem)
         {
-            Spawn();
-            spawnCountdown = waitingForNextSpawn;
+            spawnCountdown -= Time.deltaTime;
+
+            if (spawnCountdown <= 0 && itemsCount < 5)
+            {
+                Spawn();
+                spawnCountdown = waitingForNextSpawn;
+            }
         }
     }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 
     public List<GameObject> portals;
-    public List<GameObject> players;
+    public List<GameObject> players;    
     public bool hasActiveItem = false;
     public float itemTimer = 5f;
     private List<GameObject> items = new List<GameObject>();
