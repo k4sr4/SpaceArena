@@ -314,6 +314,7 @@ public class CharacterController : MonoBehaviour {
                 }
 
                 sourceScript.bounds.SetActive(true);
+                sourcePortal.GetComponentInParent<Animator>().SetBool("Open", false);
             }
         }
 
@@ -325,6 +326,11 @@ public class CharacterController : MonoBehaviour {
             Destroy(collision.gameObject);
 
             GameObject.FindObjectOfType<GameController>().GetComponent<ItemSpawner>().itemsCount--;
+        }
+
+        if(collision.tag == "PortalBounds")
+        {
+            collision.gameObject.GetComponentInParent<Animator>().SetBool("Open", true);
         }
     }
 
@@ -368,6 +374,10 @@ public class CharacterController : MonoBehaviour {
             autoMove = false;
             autoMoveX = 0f;
             autoMoveY = 0f;
+        }
+        else if (collision.tag == "PortalBounds")
+        {
+            collision.gameObject.GetComponentInParent<Animator>().SetBool("Open", false);
         }
     }
 
