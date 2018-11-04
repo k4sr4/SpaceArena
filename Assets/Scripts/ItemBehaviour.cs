@@ -12,26 +12,26 @@ public class ItemBehaviour : MonoBehaviour
     void Start()
     {
         if (Random.Range(0, 2) == 0) self = true;
-        type = Random.Range(1,6);
+        type = Random.Range(1,5);
 
         switch (type){
             case 1:
                 itemName = "timeCapsule";
                 GetComponent<SpriteRenderer>().sprite = sprites[0];
                 break;
+            //case 2:
+                //itemName = "cottonCandyGun";
+                //GetComponent<SpriteRenderer>().sprite = sprites[1];
+                //break;
             case 2:
-                itemName = "cottonCandyGun";
-                GetComponent<SpriteRenderer>().sprite = sprites[1];
-                break;
-            case 3:
                 itemName = "rehabilitator";
                 GetComponent<SpriteRenderer>().sprite = sprites[2];
                 break;
-            case 4:
+            case 3:
                 itemName = "reverseControl";
                 GetComponent<SpriteRenderer>().sprite = sprites[3];
                 break;
-            case 5:
+            case 4:
                 itemName = "frenzy";
                 GetComponent<SpriteRenderer>().sprite = sprites[4];
                 break;
@@ -63,9 +63,9 @@ public class ItemBehaviour : MonoBehaviour
                                 case "timeCapsule":
                                     player.TimeCapsule();
                                     break;
-                                case "cottonCandyGun":
-                                    player.CottonCandyGun();
-                                    break;
+                                //case "cottonCandyGun":
+                                    //player.CottonCandyGun();
+                                    //break;
                                 case "rehabilitator":
                                     player.Rehabilitate();
                                     break;
@@ -86,9 +86,9 @@ public class ItemBehaviour : MonoBehaviour
                         case "timeCapsule":
                             currPlayer.TimeCapsule();
                             break;
-                        case "cottonCandyGun":
-                            currPlayer.CottonCandyGun();
-                            break;
+                        //case "cottonCandyGun":
+                            //currPlayer.CottonCandyGun();
+                            //break;
                         case "rehabilitator":
                             currPlayer.Rehabilitate();
                             break;

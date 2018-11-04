@@ -111,6 +111,6 @@ public class BulletScript : MonoBehaviour {
     public void DestroyAfterExplode()
     {
         Destroy(gameObject);
-        player.GetComponent<CharacterController>().glow.SetActive(false);
+        if(player != null) player.GetComponent<CharacterController>().glow.SetActive(false);
     }
 }

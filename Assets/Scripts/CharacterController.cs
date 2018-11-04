@@ -78,7 +78,16 @@ public class CharacterController : MonoBehaviour {
         {
             gunFire();
         }
-        else if (cottonCandyGun || Input.GetButton("Fire" + id) && cooldown > .5 && ammo > 0)
+        //else if (cottonCandyGun){
+        //    if (Input.GetButton("Fire" + id) && cooldown > .5 && ammo > 0)
+        //    {
+        //        gunFire();
+        //        cooldown = 0f;
+        //        ammo--;
+        //    }
+
+        //}
+        else if (Input.GetButton("Fire" + id) && cooldown > .5 && ammo > 0)
         {
             gunFire();
             cooldown = 0f;
