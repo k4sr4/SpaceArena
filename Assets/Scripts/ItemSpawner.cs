@@ -9,6 +9,8 @@ public class ItemSpawner : MonoBehaviour {
     public float itemsCount = 0;
     public GameObject itemPrefab;
     public bool reposition = false;
+    public bool instruction = true;
+
     [Header("X Spawn Range")]
     public float xMin;
     public float xMax;
@@ -20,7 +22,7 @@ public class ItemSpawner : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (!GameObject.FindObjectOfType<GameController>().hasActiveItem)
+        if (!GameObject.FindObjectOfType<GameController>().hasActiveItem && !instruction )
         {
             spawnCountdown -= Time.deltaTime;
 

@@ -14,8 +14,9 @@ public class UIInstructionScript : MonoBehaviour {
 	// Use this for initialization
 	void Awake ()
     {
+        GameObject.FindObjectOfType<ItemSpawner>().instruction = true;
         StartCoroutine(FirstInstruction());
-        GameObject.FindObjectOfType<GameController>().hasActiveItem = true;
+
 	}
 	
 	// Update is called once per frame
@@ -33,6 +34,7 @@ public class UIInstructionScript : MonoBehaviour {
                         player.SetActive(true);
                     }
                     first = false;
+                    acceptInput = false;
                 }
                 else
                 {
@@ -40,7 +42,9 @@ public class UIInstructionScript : MonoBehaviour {
                     {
                         player.GetComponent<Rigidbody2D>().WakeUp();
                     }
+                    acceptInput = false;
                 }
+
             }
         }
 	}
@@ -54,7 +58,7 @@ public class UIInstructionScript : MonoBehaviour {
 
     IEnumerator PlayTilSecondInstruction()
     {
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(20f);
         StartCoroutine(SecondInstruction());
     }
 
@@ -69,6 +73,6 @@ public class UIInstructionScript : MonoBehaviour {
         acceptInput = false;
         yield return new WaitForSeconds(2f);
         acceptInput = true;
-        GameObject.FindObjectOfType<GameController>().hasActiveItem = false;
+        GameObject.FindObjectOfType<ItemSpawner>().instruction = false;
     }
 }
