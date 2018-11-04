@@ -328,6 +328,8 @@
     <Compile Include="Assets\Scripts\UIHealthScript.cs" />
     <Compile Include="Assets\Scripts\UIInstructionScript.cs" />
     <Compile Include="Assets\Scripts\UIItemScript.cs" />
+    <Compile Include="Assets\Scripts\UIItemText.cs" />
+    <Compile Include="Assets\Scripts\UndyingGameControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\License.txt" />
