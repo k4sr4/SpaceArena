@@ -1,8 +1,8 @@
-﻿<Properties StartupConfiguration="{732CDBAA-90C7-5839-A83F-64DD5B00CD0E}|">
+﻿<Properties StartupConfiguration="{D342F358-4682-87CE-55B6-857E8FA0C8A5}|">
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CharacterController.cs">
     <Files>
-      <File FileName="Assets/Scripts/CharacterController.cs" Line="62" Column="17" />
+      <File FileName="Assets/Scripts/CharacterController.cs" Line="55" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

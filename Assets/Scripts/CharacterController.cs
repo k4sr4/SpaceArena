@@ -49,6 +49,11 @@ public class CharacterController : MonoBehaviour {
     private AudioSource audio;
     public AudioClip frenzySound;
     public AudioClip gunShot;
+    public AudioClip lifeGained;
+    public AudioClip warped;
+    public AudioClip backward;
+    public AudioClip teleport;
+    public AudioClip explode;
     private bool played;
 
     /// 
@@ -79,6 +84,7 @@ public class CharacterController : MonoBehaviour {
     private void Kill(){
         if (hp <= 0)
         {
+            audio.PlayOneShot(explode);
             killed = true;
             Instantiate(dead, transform.position, Quaternion.identity);
             GameObject.FindObjectOfType<UIInstructionScript>().CheckIfFinished();
@@ -148,12 +154,22 @@ public class CharacterController : MonoBehaviour {
         moveVertical = Input.GetAxis("Vertical" + id);
 
         if (reversed){
+
             moveHorizontal = -moveHorizontal;
             moveVertical = -moveVertical;
+            if (!played)
+            {
+                audio.PlayOneShot(backward);
+                played = true;
+            }
             transport();
         }
         else if (timeCapsule)
         {
+            if (!played) {
+                audio.PlayOneShot(warped);
+                played = true;
+            }
             speed = slow_speed;
             transport();
         }
@@ -253,6 +269,7 @@ public class CharacterController : MonoBehaviour {
 
             if (sourceScript.active)
             {
+                audio.PlayOneShot(teleport);
                 if (transform.position.x < sourcePortal.transform.position.x)
                 {
                     sourceScript.enter_left[id - 1].SetActive(true);
@@ -357,6 +374,7 @@ public class CharacterController : MonoBehaviour {
     public void ReverseControl()
     {
         reversed = true;
+        played = false;
     }
 
     public void Rehabilitate()
@@ -365,6 +383,8 @@ public class CharacterController : MonoBehaviour {
         {
             hp++;
         }
+
+        audio.PlayOneShot(lifeGained);
         GameObject.FindObjectOfType<GameController>().hasActiveItem = false;
     }
 
@@ -375,7 +395,8 @@ public class CharacterController : MonoBehaviour {
 
     public void TimeCapsule()
     {
-        timeCapsule = true; 
+        timeCapsule = true;
+        played = false;
     }
 
 
