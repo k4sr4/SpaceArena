@@ -334,10 +334,7 @@ public class CharacterController : MonoBehaviour {
 
     public void Rehabilitate()
     {
-        if (hp < 6)
-        {
-            hp++;
-        }
+        if(hp < 7) hp++;
         GameObject.FindObjectOfType<GameController>().hasActiveItem = false;
     }
 
