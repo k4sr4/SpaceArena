@@ -99,6 +99,7 @@ public class BulletScript : MonoBehaviour {
         {
             Destroy(gameObject);
             collision.GetComponent<CharacterController>().hp--;
+            if (player != null) player.GetComponent<CharacterController>().glow.SetActive(false);
         }
     }
 
@@ -111,6 +112,6 @@ public class BulletScript : MonoBehaviour {
     public void DestroyAfterExplode()
     {
         Destroy(gameObject);
-        if(player != null) player.GetComponent<CharacterController>().glow.SetActive(false);
+        if (player != null) player.GetComponent<CharacterController>().glow.SetActive(false);
     }
 }

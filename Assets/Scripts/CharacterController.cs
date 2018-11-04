@@ -64,7 +64,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     private void Kill(){
-        if (hp == 0) Destroy(gameObject);
+        if (hp <= 0) Destroy(gameObject);
     }
 
     public void DestroyAfterExplode()
@@ -125,13 +125,11 @@ public class CharacterController : MonoBehaviour {
             moveHorizontal = moveVertical;
             moveVertical = temp;
             transport();
-            FindObjectOfType<GameController>().itemTimer -= Time.deltaTime;
         }
         else if (timeCapsule)
         {
             speed = slow_speed;
             transport();
-            FindObjectOfType<GameController>().itemTimer -= Time.deltaTime;
         }
         else
         {
