@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemBehaviour : MonoBehaviour
 {
+    public List<Sprite> sprites;
     public int type = 5;
     public string itemName = "";
     public bool self = false;
@@ -16,18 +17,23 @@ public class ItemBehaviour : MonoBehaviour
         switch (type){
             case 1:
                 itemName = "timeCapsule";
+                GetComponent<SpriteRenderer>().sprite = sprites[0];
                 break;
             case 2:
                 itemName = "cottonCandyGun";
+                GetComponent<SpriteRenderer>().sprite = sprites[1];
                 break;
             case 3:
                 itemName = "rehabilitator";
+                GetComponent<SpriteRenderer>().sprite = sprites[2];
                 break;
             case 4:
                 itemName = "reverseControl";
+                GetComponent<SpriteRenderer>().sprite = sprites[3];
                 break;
             case 5:
                 itemName = "frenzy";
+                GetComponent<SpriteRenderer>().sprite = sprites[4];
                 break;
         }
     }
