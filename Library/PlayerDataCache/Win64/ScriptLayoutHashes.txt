@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/Kasra's Yoga/Desktop/Baffled Brawl/Space Arena.exe
+/Users/Raven/Desktop/Baffled Brawls/Baffled Brawl.exe
 SceneListBegin?
 Assets/Scenes/SeattleIndie.unity
 Assets/Scenes/Loading Screen.unity
@@ -277,8 +277,6 @@ aa5e3523afd7fd907d3f99da4b777fdc Vuforia.UnityExtensions.dll:Vuforia.VuforiaConf
 c8a41ce4eea7677f6dd2aa0e422a2f04 Vuforia.UnityExtensions.dll:Vuforia.VuMarkBehaviour
 c31ff9acb65f7a15b5c6fd77c3314d83 Vuforia.UnityExtensions.dll:Vuforia.WireframeBehaviour
 486cd95c82d8305219c352c06b776e1f Vuforia.UnityExtensions.dll:Vuforia.WireframeTrackableEventHandler
-85d3abc63a98e5067267f25a5b233a2f Assembly-CSharp.dll:.UIItemText
-486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.UndyingGameControl
 182e416670915c50a548c38c642db0d8 Vuforia.UnityExtensions.dll:Vuforia.AnchorBehaviour
 f35860350df72508419d9f9fcd288594 Vuforia.UnityExtensions.dll:Vuforia.AnchorInputListenerBehaviour
 182e416670915c50a548c38c642db0d8 Vuforia.UnityExtensions.dll:Vuforia.AnchorStageBehaviour
@@ -312,4 +310,6 @@ aa5e3523afd7fd907d3f99da4b777fdc Vuforia.UnityExtensions.dll:Vuforia.VuforiaConf
 c8a41ce4eea7677f6dd2aa0e422a2f04 Vuforia.UnityExtensions.dll:Vuforia.VuMarkBehaviour
 c31ff9acb65f7a15b5c6fd77c3314d83 Vuforia.UnityExtensions.dll:Vuforia.WireframeBehaviour
 486cd95c82d8305219c352c06b776e1f Vuforia.UnityExtensions.dll:Vuforia.WireframeTrackableEventHandler
-372955d99dec74505c034213714377ce Assembly-CSharp.dll:.CharacterController
+5eb7eb97bb46698b682c1503be8d060f Assembly-CSharp.dll:.CharacterController
+486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.UndyingGameControl
+85d3abc63a98e5067267f25a5b233a2f Assembly-CSharp.dll:.UIItemText
