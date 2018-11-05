@@ -83,7 +83,7 @@ public class UIInstructionScript : MonoBehaviour {
 
     IEnumerator PlayTilSecondInstruction()
     {
-        yield return new WaitForSeconds(20f);
+        yield return new WaitForSeconds(10f);
         StartCoroutine(SecondInstruction());
     }
 

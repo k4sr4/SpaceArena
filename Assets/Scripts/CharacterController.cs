@@ -53,7 +53,6 @@ public class CharacterController : MonoBehaviour {
     public AudioClip warped;
     public AudioClip backward;
     public AudioClip teleport;
-    public AudioClip explode;
     private bool played;
 
     /// 
@@ -84,7 +83,6 @@ public class CharacterController : MonoBehaviour {
     private void Kill(){
         if (hp <= 0)
         {
-            audio.PlayOneShot(explode);
             killed = true;
             Instantiate(dead, transform.position, Quaternion.identity);
             GameObject.FindObjectOfType<UIInstructionScript>().CheckIfFinished();
