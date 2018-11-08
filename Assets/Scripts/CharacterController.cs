@@ -228,12 +228,22 @@ public class CharacterController : MonoBehaviour {
 
     void Rotate()
     {
+        //mouse input only for P1
+        if (Input.mousePresent && id == 1)
+        {
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            angle = Mathf.Atan2(transform.position.x - pos.x, pos.y-transform.position.y) * Mathf.Rad2Deg;
+            rotateAnchor.rotation = Quaternion.Euler(0, 0, angle);
+        }
+
+        //controller input for everyone (including P1)
         float horizontal = Input.GetAxis("RotationX" + id);
         float vertical = Input.GetAxis("RotationY" + id);
+
         if (horizontal != 0 || vertical != 0)
         {
             angle = Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg;
-            rotateAnchor.rotation = Quaternion.Euler(0, 0, angle);            
+            rotateAnchor.rotation = Quaternion.Euler(0, 0, angle);
         }
         else if (horizontal == 0 && vertical == 0)
         {

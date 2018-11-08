@@ -20,6 +20,10 @@ public class Scenelaoder : MonoBehaviour {
         if(currScene == 1 )
         {
             if (Input.anyKeyDown) SceneManager.LoadScene(currScene + 1);
+
+        }
+        if (Input.GetKeyDown(KeyCode.R)) {
+            SceneManager.LoadScene(1);
         }
     }
 

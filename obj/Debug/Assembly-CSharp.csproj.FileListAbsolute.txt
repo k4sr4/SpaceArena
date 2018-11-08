@@ -249,3 +249,6 @@
 /Users/Raven/Desktop/GameJam/SpaceArena/obj/Debug/Assembly-CSharp.csproj.CopyComplete
 /Users/Raven/Desktop/GameJam/SpaceArena/obj/Debug/Assembly-CSharp.dll
 /Users/Raven/Desktop/GameJam/SpaceArena/obj/Debug/Assembly-CSharp.pdb
+/Users/Raven/Desktop/GameJam/SpaceArena/Temp/bin/Debug/UnityEngine.SpatialTrackingModule.dll
+/Users/Raven/Desktop/GameJam/SpaceArena/Temp/bin/Debug/UnityEngine.SpatialTrackingModule.dll.mdb
+/Users/Raven/Desktop/GameJam/SpaceArena/Temp/bin/Debug/UnityEngine.SpatialTrackingModule.xml
